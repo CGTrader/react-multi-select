@@ -78,33 +78,30 @@ var SelectList = function (_Component) {
 
 
             return options.map(function (o, i) {
-                return _react2.default.createElement(
-                    'li',
-                    { style: styles.listItem, key: i },
-                    _react2.default.createElement(_selectItem2.default, {
-                        focused: focusIndex === i,
-                        option: o,
-                        onSelectionChanged: function onSelectionChanged(c) {
-                            return _this2.handleSelectionChanged(o, c);
-                        },
-                        checked: selected.includes(o.value),
-                        onClick: function (_onClick) {
-                            function onClick(_x) {
-                                return _onClick.apply(this, arguments);
-                            }
+                return _react2.default.createElement(_selectItem2.default, {
+                    key: i,
+                    focused: focusIndex === i,
+                    option: o,
+                    onSelectionChanged: function onSelectionChanged(c) {
+                        return _this2.handleSelectionChanged(o, c);
+                    },
+                    checked: selected.includes(o.value),
+                    onClick: function (_onClick) {
+                        function onClick(_x) {
+                            return _onClick.apply(this, arguments);
+                        }
 
-                            onClick.toString = function () {
-                                return _onClick.toString();
-                            };
+                        onClick.toString = function () {
+                            return _onClick.toString();
+                        };
 
-                            return onClick;
-                        }(function (e) {
-                            return onClick(e, i);
-                        }),
-                        ItemRenderer: ItemRenderer,
-                        disabled: disabled
-                    })
-                );
+                        return onClick;
+                    }(function (e) {
+                        return onClick(e, i);
+                    }),
+                    ItemRenderer: ItemRenderer,
+                    disabled: disabled
+                });
             });
         }
     }, {
@@ -113,8 +110,7 @@ var SelectList = function (_Component) {
             return _react2.default.createElement(
                 'ul',
                 {
-                    className: 'select-list',
-                    style: styles.list
+                    className: 'custom-dropdown__list'
                 },
                 this.renderItems()
             );
@@ -123,15 +119,5 @@ var SelectList = function (_Component) {
 
     return SelectList;
 }(_react.Component);
-
-var styles = {
-    list: {
-        margin: 0,
-        paddingLeft: 0
-    },
-    listItem: {
-        listStyle: 'none'
-    }
-};
 
 exports.default = SelectList;
