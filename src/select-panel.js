@@ -157,7 +157,7 @@ class SelectPanel extends Component<Props, State> {
                     className="custom-dropdown__caret"
                 >
                     <span
-                        className="fas fa-caret-up"
+                        className="fas fa-caret-up is-not-spaced"
                     />
                 </span>
             </div>

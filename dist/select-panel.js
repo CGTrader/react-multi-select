@@ -191,7 +191,7 @@ var SelectPanel = function (_Component) {
                             className: 'custom-dropdown__caret'
                         },
                         _react2.default.createElement('span', {
-                            className: 'fas fa-caret-up'
+                            className: 'fas fa-caret-up is-not-spaced'
                         })
                     )
                 ),

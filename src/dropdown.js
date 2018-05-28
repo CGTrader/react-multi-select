@@ -155,7 +155,7 @@ class Dropdown extends Component<Props, State> {
                     className="custom-dropdown__caret"
                 >
                     <span
-                        className="fas fa-caret-down"
+                        className="fas fa-caret-down is-not-spaced"
                     />
                 </span>
             </div>
