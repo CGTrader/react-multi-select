@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require("react");
@@ -43,23 +41,21 @@ var DefaultItemRenderer = function (_Component) {
                 disabled = _props.disabled;
 
 
-            var style = _extends({}, styles.label, disabled ? styles.labelDisabled : undefined);
-
             return _react2.default.createElement(
-                "span",
-                {
-                    className: "item-renderer"
-                },
+                "div",
+                null,
                 _react2.default.createElement("input", {
                     type: "checkbox",
                     onChange: onClick,
                     checked: checked,
                     tabIndex: "-1",
-                    disabled: disabled
+                    disabled: disabled,
+                    className: "checkbox is-spaced",
+                    id: option.label === 'Select All' ? 'select-all' : option.value
                 }),
                 _react2.default.createElement(
-                    "span",
-                    { style: style },
+                    "label",
+                    { htmlFor: option.label === 'Select All' ? 'select-all' : option.value },
                     option.label
                 )
             );
@@ -151,17 +147,13 @@ var SelectItem = function (_Component2) {
             var hovered = this.state.hovered;
 
 
-            var focusStyle = focused || hovered ? styles.itemContainerHover : undefined;
-
             return _react2.default.createElement(
-                "label",
+                "li",
                 {
-                    className: "select-item",
                     role: "option",
                     "aria-selected": checked,
                     selected: checked,
                     tabIndex: "-1",
-                    style: _extends({}, styles.itemContainer, focusStyle),
                     ref: function ref(_ref2) {
                         return _this3.itemRef = _ref2;
                     },
@@ -189,32 +181,4 @@ var SelectItem = function (_Component2) {
 SelectItem.defaultProps = {
     ItemRenderer: DefaultItemRenderer
 };
-
-
-var styles = {
-    itemContainer: {
-        boxSizing: 'border-box',
-        backgroundColor: '#fff',
-        color: '#666666',
-        cursor: 'pointer',
-        display: 'block',
-        padding: '8px 10px'
-    },
-    itemContainerHover: {
-        backgroundColor: '#ebf5ff',
-        outline: 0
-    },
-    label: {
-        display: 'inline-block',
-        verticalAlign: 'middle',
-        borderBottomRightRadius: '2px',
-        borderTopRightRadius: '2px',
-        cursor: 'default',
-        padding: '2px 5px'
-    },
-    labelDisabled: {
-        opacity: 0.5
-    }
-};
-
 exports.default = SelectItem;

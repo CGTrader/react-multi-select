@@ -25,14 +25,12 @@ type Props = {
 };
 
 type State = {
-    searchHasFocus: boolean,
     searchText: string,
     focusIndex: number
 };
 
 class SelectPanel extends Component<Props, State> {
     state = {
-        searchHasFocus: false,
         searchText: "",
         focusIndex: 0,
     }
@@ -97,13 +95,6 @@ class SelectPanel extends Component<Props, State> {
         e.preventDefault();
     }
 
-    handleSearchFocus = (searchHasFocus: boolean) => {
-        this.setState({
-            searchHasFocus,
-            focusIndex: -1,
-        });
-    }
-
     allAreSelected() {
         const {options, selected} = this.props;
         return options.length === selected.length;
@@ -130,13 +121,16 @@ class SelectPanel extends Component<Props, State> {
     }
 
     render() {
-        const {focusIndex, searchHasFocus} = this.state;
+        const {focusIndex} = this.state;
         const {
             ItemRenderer,
             selectAllLabel,
             disabled,
             disableSearch,
             hasSelectAll,
+            selected,
+            placeholder,
+            options
         } = this.props;
 
         const selectAllOption = {
@@ -144,78 +138,68 @@ class SelectPanel extends Component<Props, State> {
             value: "",
         };
 
-        const focusedSearchStyle = searchHasFocus
-            ? styles.searchFocused
-            : undefined;
-
         return <div
-            className="select-panel"
-            style={styles.panel}
-            role="listbox"
-            onKeyDown={this.handleKeyDown}
+            className="custom-dropdown__content"
         >
-            {!disableSearch && <div style={styles.searchContainer}>
-                <input
-                    placeholder="Search"
-                    type="text"
-                    onChange={this.handleSearchChange}
-                    style={{...styles.search, ...focusedSearchStyle}}
-                    onFocus={() => this.handleSearchFocus(true)}
-                    onBlur={() => this.handleSearchFocus(false)}
+            <div
+                className="custom-dropdown__header"
+                onClick={() => this.props.toggleExpanded(false)}
+            >
+                <span
+                    className="custom-dropdown__title"
+                >
+                    {selected.length === 0 ?
+                        placeholder ? placeholder : "Select" :
+                        (selected.length === options.length ? "All items are selected" : selected.length + ' selected')
+                    }
+                </span>
+                <span
+                    className="custom-dropdown__caret"
+                >
+                    <span
+                        className="fas fa-caret-up"
+                    />
+                </span>
+            </div>
+            <div
+                className="custom-dropdown__dropdown"
+                role="listbox"
+                onKeyDown={this.handleKeyDown}
+            >
+                {!disableSearch && <div className="custom-dropdown__search">
+                    <input
+                        placeholder="Search"
+                        type="text"
+                        onChange={this.handleSearchChange}
+                        className="custom-dropdown__search-input"
+                    />
+                </div>}
+
+                {hasSelectAll &&
+                <ul className="custom-dropdown__list">
+                    <SelectItem
+                        focused={focusIndex === 0}
+                        checked={this.allAreSelected()}
+                        option={selectAllOption}
+                        onSelectionChanged={this.selectAllChanged}
+                        onClick={() => this.handleItemClicked(0)}
+                        ItemRenderer={ItemRenderer}
+                        disabled={disabled}
+                    />
+                </ul>
+                }
+
+                <SelectList
+                    {...this.props}
+                    options={this.filteredOptions()}
+                    focusIndex={focusIndex - 1}
+                    onClick={(e, index) => this.handleItemClicked(index + 1)}
+                    ItemRenderer={ItemRenderer}
+                    disabled={disabled}
                 />
-            </div>}
-
-            {hasSelectAll &&
-              <SelectItem
-                  focused={focusIndex === 0}
-                  checked={this.allAreSelected()}
-                  option={selectAllOption}
-                  onSelectionChanged={this.selectAllChanged}
-                  onClick={() => this.handleItemClicked(0)}
-                  ItemRenderer={ItemRenderer}
-                  disabled={disabled}
-              />
-            }
-
-            <SelectList
-                {...this.props}
-                options={this.filteredOptions()}
-                focusIndex={focusIndex - 1}
-                onClick={(e, index) => this.handleItemClicked(index + 1)}
-                ItemRenderer={ItemRenderer}
-                disabled={disabled}
-            />
+            </div>
         </div>;
     }
 }
-
-const styles = {
-    panel: {
-        boxSizing : 'border-box',
-    },
-    search: {
-        display: "block",
-
-        maxWidth: "100%",
-        borderRadius: "3px",
-
-        boxSizing : 'border-box',
-        height: '30px',
-        lineHeight: '24px',
-        border: '1px solid',
-        borderColor: '#dee2e4',
-        padding: '10px',
-        width: "100%",
-        outline: "none",
-    },
-    searchFocused: {
-        borderColor: "#78c008",
-    },
-    searchContainer: {
-        width: "100%",
-        boxSizing : 'border-box',
-        padding: "0.5em",
-    },
-};
 
 export default SelectPanel;

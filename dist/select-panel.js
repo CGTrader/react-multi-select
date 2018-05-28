@@ -51,7 +51,6 @@ var SelectPanel = function (_Component) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SelectPanel.__proto__ || Object.getPrototypeOf(SelectPanel)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-            searchHasFocus: false,
             searchText: "",
             focusIndex: 0
         }, _this.selectAll = function () {
@@ -108,11 +107,6 @@ var SelectPanel = function (_Component) {
 
             e.stopPropagation();
             e.preventDefault();
-        }, _this.handleSearchFocus = function (searchHasFocus) {
-            _this.setState({
-                searchHasFocus: searchHasFocus,
-                focusIndex: -1
-            });
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -154,15 +148,16 @@ var SelectPanel = function (_Component) {
         value: function render() {
             var _this2 = this;
 
-            var _state = this.state,
-                focusIndex = _state.focusIndex,
-                searchHasFocus = _state.searchHasFocus;
+            var focusIndex = this.state.focusIndex;
             var _props3 = this.props,
                 ItemRenderer = _props3.ItemRenderer,
                 selectAllLabel = _props3.selectAllLabel,
                 disabled = _props3.disabled,
                 disableSearch = _props3.disableSearch,
-                hasSelectAll = _props3.hasSelectAll;
+                hasSelectAll = _props3.hasSelectAll,
+                selected = _props3.selected,
+                placeholder = _props3.placeholder,
+                options = _props3.options;
 
 
             var selectAllOption = {
@@ -170,86 +165,83 @@ var SelectPanel = function (_Component) {
                 value: ""
             };
 
-            var focusedSearchStyle = searchHasFocus ? styles.searchFocused : undefined;
-
             return _react2.default.createElement(
                 'div',
                 {
-                    className: 'select-panel',
-                    style: styles.panel,
-                    role: 'listbox',
-                    onKeyDown: this.handleKeyDown
+                    className: 'custom-dropdown__content'
                 },
-                !disableSearch && _react2.default.createElement(
+                _react2.default.createElement(
                     'div',
-                    { style: styles.searchContainer },
-                    _react2.default.createElement('input', {
-                        placeholder: 'Search',
-                        type: 'text',
-                        onChange: this.handleSearchChange,
-                        style: _extends({}, styles.search, focusedSearchStyle),
-                        onFocus: function onFocus() {
-                            return _this2.handleSearchFocus(true);
-                        },
-                        onBlur: function onBlur() {
-                            return _this2.handleSearchFocus(false);
+                    {
+                        className: 'custom-dropdown__header',
+                        onClick: function onClick() {
+                            return _this2.props.toggleExpanded(false);
                         }
-                    })
+                    },
+                    _react2.default.createElement(
+                        'span',
+                        {
+                            className: 'custom-dropdown__title'
+                        },
+                        selected.length === 0 ? placeholder ? placeholder : "Select" : selected.length === options.length ? "All items are selected" : selected.length + ' selected'
+                    ),
+                    _react2.default.createElement(
+                        'span',
+                        {
+                            className: 'custom-dropdown__caret'
+                        },
+                        _react2.default.createElement('span', {
+                            className: 'fas fa-caret-up'
+                        })
+                    )
                 ),
-                hasSelectAll && _react2.default.createElement(_selectItem2.default, {
-                    focused: focusIndex === 0,
-                    checked: this.allAreSelected(),
-                    option: selectAllOption,
-                    onSelectionChanged: this.selectAllChanged,
-                    onClick: function onClick() {
-                        return _this2.handleItemClicked(0);
+                _react2.default.createElement(
+                    'div',
+                    {
+                        className: 'custom-dropdown__dropdown',
+                        role: 'listbox',
+                        onKeyDown: this.handleKeyDown
                     },
-                    ItemRenderer: ItemRenderer,
-                    disabled: disabled
-                }),
-                _react2.default.createElement(_selectList2.default, _extends({}, this.props, {
-                    options: this.filteredOptions(),
-                    focusIndex: focusIndex - 1,
-                    onClick: function onClick(e, index) {
-                        return _this2.handleItemClicked(index + 1);
-                    },
-                    ItemRenderer: ItemRenderer,
-                    disabled: disabled
-                }))
+                    !disableSearch && _react2.default.createElement(
+                        'div',
+                        { className: 'custom-dropdown__search' },
+                        _react2.default.createElement('input', {
+                            placeholder: 'Search',
+                            type: 'text',
+                            onChange: this.handleSearchChange,
+                            className: 'custom-dropdown__search-input'
+                        })
+                    ),
+                    hasSelectAll && _react2.default.createElement(
+                        'ul',
+                        { className: 'custom-dropdown__list' },
+                        _react2.default.createElement(_selectItem2.default, {
+                            focused: focusIndex === 0,
+                            checked: this.allAreSelected(),
+                            option: selectAllOption,
+                            onSelectionChanged: this.selectAllChanged,
+                            onClick: function onClick() {
+                                return _this2.handleItemClicked(0);
+                            },
+                            ItemRenderer: ItemRenderer,
+                            disabled: disabled
+                        })
+                    ),
+                    _react2.default.createElement(_selectList2.default, _extends({}, this.props, {
+                        options: this.filteredOptions(),
+                        focusIndex: focusIndex - 1,
+                        onClick: function onClick(e, index) {
+                            return _this2.handleItemClicked(index + 1);
+                        },
+                        ItemRenderer: ItemRenderer,
+                        disabled: disabled
+                    }))
+                )
             );
         }
     }]);
 
     return SelectPanel;
 }(_react.Component);
-
-var styles = {
-    panel: {
-        boxSizing: 'border-box'
-    },
-    search: {
-        display: "block",
-
-        maxWidth: "100%",
-        borderRadius: "3px",
-
-        boxSizing: 'border-box',
-        height: '30px',
-        lineHeight: '24px',
-        border: '1px solid',
-        borderColor: '#dee2e4',
-        padding: '10px',
-        width: "100%",
-        outline: "none"
-    },
-    searchFocused: {
-        borderColor: "#78c008"
-    },
-    searchContainer: {
-        width: "100%",
-        boxSizing: 'border-box',
-        padding: "0.5em"
-    }
-};
 
 exports.default = SelectPanel;

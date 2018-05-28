@@ -21,25 +21,20 @@ class DefaultItemRenderer extends Component<DefaultItemRendererProps> {
     render() {
         const {checked, option, onClick, disabled} = this.props;
 
-        const style = {
-            ...styles.label,
-            ...(disabled ? styles.labelDisabled : undefined),
-        };
-
-        return <span
-            className="item-renderer"
-        >
+        return <div>
             <input
                 type="checkbox"
                 onChange={onClick}
                 checked={checked}
                 tabIndex="-1"
                 disabled={disabled}
+                className="checkbox is-spaced"
+                id={option.label === 'Select All' ? 'select-all' : option.value}
             />
-            <span style={style}>
+            <label htmlFor={option.label === 'Select All' ? 'select-all' : option.value}>
                 {option.label}
-            </span>
-        </span>;
+            </label>
+        </div>;
     }
 }
 
@@ -118,17 +113,11 @@ class SelectItem extends Component<SelectItemProps, SelectItemState> {
         const {ItemRenderer, option, checked, focused, disabled} = this.props;
         const {hovered} = this.state;
 
-        const focusStyle = (focused || hovered)
-            ? styles.itemContainerHover
-            : undefined;
-
-        return <label
-            className="select-item"
+        return <li
             role="option"
             aria-selected={checked}
             selected={checked}
             tabIndex="-1"
-            style={{...styles.itemContainer, ...focusStyle}}
             ref={ref => this.itemRef = ref}
             onKeyDown={this.handleKeyDown}
             onMouseOver={() => this.setState({hovered: true})}
@@ -140,35 +129,8 @@ class SelectItem extends Component<SelectItemProps, SelectItemState> {
                 onClick={this.handleClick}
                 disabled={disabled}
             />
-        </label>;
+        </li>;
     }
 }
-
-
-const styles = {
-    itemContainer: {
-        boxSizing: 'border-box',
-        backgroundColor: '#fff',
-        color: '#666666',
-        cursor: 'pointer',
-        display: 'block',
-        padding: '8px 10px',
-    },
-    itemContainerHover: {
-        backgroundColor: '#ebf5ff',
-        outline: 0,
-    },
-    label: {
-        display: 'inline-block',
-        verticalAlign: 'middle',
-        borderBottomRightRadius: '2px',
-        borderTopRightRadius: '2px',
-        cursor: 'default',
-        padding: '2px 5px',
-    },
-    labelDisabled: {
-        opacity: 0.5,
-    },
-};
 
 export default SelectItem;

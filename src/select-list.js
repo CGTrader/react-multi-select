@@ -51,38 +51,26 @@ class SelectList extends Component<Props> {
         } = this.props;
 
         return options.map((o, i) =>
-            <li style={styles.listItem} key={i}>
-                <SelectItem
-                    focused={focusIndex === i}
-                    option={o}
-                    onSelectionChanged={c => this.handleSelectionChanged(o, c)}
-                    checked={selected.includes(o.value)}
-                    onClick={e => onClick(e, i)}
-                    ItemRenderer={ItemRenderer}
-                    disabled={disabled}
-                />
-            </li>
+            <SelectItem
+                key={i}
+                focused={focusIndex === i}
+                option={o}
+                onSelectionChanged={c => this.handleSelectionChanged(o, c)}
+                checked={selected.includes(o.value)}
+                onClick={e => onClick(e, i)}
+                ItemRenderer={ItemRenderer}
+                disabled={disabled}
+            />
         );
     }
 
     render() {
         return <ul
-            className="select-list"
-            style={styles.list}
+            className="custom-dropdown__list"
         >
             {this.renderItems()}
         </ul>;
     }
 }
-
-const styles = {
-    list: {
-        margin: 0,
-        paddingLeft: 0,
-    },
-    listItem: {
-        listStyle: 'none',
-    },
-};
 
 export default SelectList;

@@ -36,7 +36,8 @@ type Props = {
     disableSearch?: boolean,
     shouldToggleOnHover: boolean,
     hasSelectAll: boolean,
-    filterOptions?: (options: Array<Option>, filter: string) => Array<Option>
+    filterOptions?: (options: Array<Option>, filter: string) => Array<Option>,
+    placeholder: string
 };
 
 class MultiSelect extends Component<Props> {
@@ -46,14 +47,9 @@ class MultiSelect extends Component<Props> {
     }
 
     getSelectedText() {
-        const {options, selected} = this.props;
+        const { selected } = this.props;
 
-        const selectedOptions = selected
-            .map(s => options.find(o => o.value === s));
-
-        const selectedLabels = selectedOptions.map(s => s ? s.label : "");
-
-        return selectedLabels.join(", ");
+        return selected.length + ' selected';
     }
 
     renderHeader() {
@@ -61,6 +57,7 @@ class MultiSelect extends Component<Props> {
             options,
             selected,
             valueRenderer,
+            placeholder
         } = this.props;
 
         const noneSelected = selected.length === 0;
@@ -69,8 +66,8 @@ class MultiSelect extends Component<Props> {
         const customText = valueRenderer && valueRenderer(selected, options);
 
         if (noneSelected) {
-            return <span style={styles.noneSelected}>
-                {customText || "Select some items..."}
+            return <span>
+                {customText || (placeholder ? placeholder : "Select")}
             </span>;
         }
 
@@ -110,37 +107,31 @@ class MultiSelect extends Component<Props> {
             filterOptions,
             shouldToggleOnHover,
             hasSelectAll,
+            placeholder
         } = this.props;
 
-        return <div className="multi-select">
-            <Dropdown
-                isLoading={isLoading}
-                contentComponent={SelectPanel}
-                shouldToggleOnHover={shouldToggleOnHover}
-                contentProps={{
-                    ItemRenderer,
-                    options,
-                    selected,
-                    hasSelectAll,
-                    selectAllLabel,
-                    onSelectedChanged: this.handleSelectedChanged,
-                    disabled,
-                    disableSearch,
-                    filterOptions,
-                }}
-                disabled={disabled}
-            >
-                {this.renderHeader()}
-            </Dropdown>
-        </div>;
+        return <Dropdown
+            isLoading={isLoading}
+            contentComponent={SelectPanel}
+            shouldToggleOnHover={shouldToggleOnHover}
+            contentProps={{
+                ItemRenderer,
+                options,
+                selected,
+                hasSelectAll,
+                selectAllLabel,
+                onSelectedChanged: this.handleSelectedChanged,
+                disabled,
+                disableSearch,
+                filterOptions,
+                placeholder
+            }}
+            disabled={disabled}
+        >
+            {this.renderHeader()}
+        </Dropdown>;
     }
 }
-
-const styles = {
-    noneSelected: {
-        color: "#aaa",
-    },
-};
 
 export default MultiSelect;
 export {Dropdown};

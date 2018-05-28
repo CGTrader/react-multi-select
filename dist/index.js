@@ -74,30 +74,19 @@ var MultiSelect = function (_Component) {
     _createClass(MultiSelect, [{
         key: 'getSelectedText',
         value: function getSelectedText() {
-            var _props = this.props,
-                options = _props.options,
-                selected = _props.selected;
+            var selected = this.props.selected;
 
 
-            var selectedOptions = selected.map(function (s) {
-                return options.find(function (o) {
-                    return o.value === s;
-                });
-            });
-
-            var selectedLabels = selectedOptions.map(function (s) {
-                return s ? s.label : "";
-            });
-
-            return selectedLabels.join(", ");
+            return selected.length + ' selected';
         }
     }, {
         key: 'renderHeader',
         value: function renderHeader() {
-            var _props2 = this.props,
-                options = _props2.options,
-                selected = _props2.selected,
-                valueRenderer = _props2.valueRenderer;
+            var _props = this.props,
+                options = _props.options,
+                selected = _props.selected,
+                valueRenderer = _props.valueRenderer,
+                placeholder = _props.placeholder;
 
 
             var noneSelected = selected.length === 0;
@@ -108,8 +97,8 @@ var MultiSelect = function (_Component) {
             if (noneSelected) {
                 return _react2.default.createElement(
                     'span',
-                    { style: styles.noneSelected },
-                    customText || "Select some items..."
+                    null,
+                    customText || (placeholder ? placeholder : "Select")
                 );
             }
 
@@ -130,43 +119,41 @@ var MultiSelect = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _props3 = this.props,
-                ItemRenderer = _props3.ItemRenderer,
-                options = _props3.options,
-                selected = _props3.selected,
-                selectAllLabel = _props3.selectAllLabel,
-                isLoading = _props3.isLoading,
-                disabled = _props3.disabled,
-                disableSearch = _props3.disableSearch,
-                filterOptions = _props3.filterOptions,
-                shouldToggleOnHover = _props3.shouldToggleOnHover,
-                hasSelectAll = _props3.hasSelectAll;
+            var _props2 = this.props,
+                ItemRenderer = _props2.ItemRenderer,
+                options = _props2.options,
+                selected = _props2.selected,
+                selectAllLabel = _props2.selectAllLabel,
+                isLoading = _props2.isLoading,
+                disabled = _props2.disabled,
+                disableSearch = _props2.disableSearch,
+                filterOptions = _props2.filterOptions,
+                shouldToggleOnHover = _props2.shouldToggleOnHover,
+                hasSelectAll = _props2.hasSelectAll,
+                placeholder = _props2.placeholder;
 
 
             return _react2.default.createElement(
-                'div',
-                { className: 'multi-select' },
-                _react2.default.createElement(
-                    _dropdown2.default,
-                    {
-                        isLoading: isLoading,
-                        contentComponent: _selectPanel2.default,
-                        shouldToggleOnHover: shouldToggleOnHover,
-                        contentProps: {
-                            ItemRenderer: ItemRenderer,
-                            options: options,
-                            selected: selected,
-                            hasSelectAll: hasSelectAll,
-                            selectAllLabel: selectAllLabel,
-                            onSelectedChanged: this.handleSelectedChanged,
-                            disabled: disabled,
-                            disableSearch: disableSearch,
-                            filterOptions: filterOptions
-                        },
-                        disabled: disabled
+                _dropdown2.default,
+                {
+                    isLoading: isLoading,
+                    contentComponent: _selectPanel2.default,
+                    shouldToggleOnHover: shouldToggleOnHover,
+                    contentProps: {
+                        ItemRenderer: ItemRenderer,
+                        options: options,
+                        selected: selected,
+                        hasSelectAll: hasSelectAll,
+                        selectAllLabel: selectAllLabel,
+                        onSelectedChanged: this.handleSelectedChanged,
+                        disabled: disabled,
+                        disableSearch: disableSearch,
+                        filterOptions: filterOptions,
+                        placeholder: placeholder
                     },
-                    this.renderHeader()
-                )
+                    disabled: disabled
+                },
+                this.renderHeader()
             );
         }
     }]);
@@ -178,13 +165,5 @@ MultiSelect.defaultProps = {
     hasSelectAll: true,
     shouldToggleOnHover: false
 };
-
-
-var styles = {
-    noneSelected: {
-        color: "#aaa"
-    }
-};
-
 exports.default = MultiSelect;
 exports.Dropdown = _dropdown2.default;
