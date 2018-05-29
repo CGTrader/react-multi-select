@@ -124,7 +124,7 @@ class Dropdown extends Component<Props, State> {
         const {children, isLoading, disabled} = this.props;
 
         return <div
-            className="custom-dropdown--multi"
+            className={`custom-dropdown--multi ${ disabled ? 'is-disabled' : '' }`}
             tabIndex="0"
             role="combobox"
             aria-expanded={expanded}
@@ -159,7 +159,7 @@ class Dropdown extends Component<Props, State> {
                     />
                 </span>
             </div>
-            {expanded && this.renderPanel()}
+            {expanded && !disabled && this.renderPanel()}
         </div>;
     }
 }

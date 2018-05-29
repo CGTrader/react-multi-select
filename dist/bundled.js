@@ -422,7 +422,7 @@ var Dropdown = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 {
-                    className: 'custom-dropdown--multi',
+                    className: 'custom-dropdown--multi ' + (disabled ? 'is-disabled' : ''),
                     tabIndex: '0',
                     role: 'combobox',
                     'aria-expanded': expanded,
@@ -467,7 +467,7 @@ var Dropdown = function (_Component) {
                         })
                     )
                 ),
-                expanded && this.renderPanel()
+                expanded && !disabled && this.renderPanel()
             );
         }
     }]);
