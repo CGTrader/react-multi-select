@@ -113,7 +113,7 @@ var MultiSelect = function (_Component) {
             return _react2.default.createElement(
                 'span',
                 null,
-                allSelected ? "All items are selected" : this.getSelectedText()
+                allSelected ? "All selected" : this.getSelectedText()
             );
         }
     }, {

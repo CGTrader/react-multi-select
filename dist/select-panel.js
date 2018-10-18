@@ -183,7 +183,7 @@ var SelectPanel = function (_Component) {
                         {
                             className: 'custom-dropdown__title'
                         },
-                        selected.length === 0 ? placeholder ? placeholder : "Select" : selected.length === options.length ? "All items are selected" : selected.length + ' selected'
+                        selected.length === 0 ? placeholder ? placeholder : "Select" : selected.length === options.length ? "All selected" : selected.length + ' selected'
                     ),
                     _react2.default.createElement(
                         'span',

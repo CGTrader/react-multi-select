@@ -77,7 +77,7 @@ class MultiSelect extends Component<Props> {
 
         return <span>
             {allSelected
-                ? "All items are selected"
+                ? "All selected"
                 : this.getSelectedText()
             }
         </span>;

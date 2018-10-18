@@ -150,7 +150,7 @@ class SelectPanel extends Component<Props, State> {
                 >
                     {selected.length === 0 ?
                         placeholder ? placeholder : "Select" :
-                        (selected.length === options.length ? "All items are selected" : selected.length + ' selected')
+                        (selected.length === options.length ? "All selected" : selected.length + ' selected')
                     }
                 </span>
                 <span
