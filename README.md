@@ -6,6 +6,13 @@ React Multi Select Component
 
 [Storybook Demo](https://khan.github.io/react-multi-select/)
 
+## Updating code:
+Make changes to files in `src` directory and then run the command below before committing changes:
+
+`yarn prepublish`
+
+This will update files in `dist`. Any changes made in `dist` manually will be overwritten.
+
 ## Installation:
 `npm install --save @khanacademy/react-multi-select`
 
